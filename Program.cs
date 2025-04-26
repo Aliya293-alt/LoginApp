@@ -1,4 +1,3 @@
-using Datadog.Trace;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.DataProtection;
 
@@ -41,17 +40,6 @@ if (!app.Environment.IsDevelopment())
     app.UseExceptionHandler("/Home/Error");
     app.UseHsts();
 }
-
-// Add Datadog middleware
-app.Use(async (context, next) =>
-{
-    using (var scope = Tracer.Instance.StartActive("web.request"))
-    {
-        scope.Span.ServiceName = "LoginApp";
-        scope.Span.ResourceName = $"{context.Request.Method} {context.Request.Path}";
-        await next();
-    }
-});
 
 app.UseStaticFiles();
 app.UseRouting();
